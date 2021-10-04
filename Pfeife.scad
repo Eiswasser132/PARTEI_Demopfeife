@@ -3,10 +3,11 @@ $fn = 100;
 b   = 20;       // Breite der Pfeife
 l   = 35;       // Laenge der Pfeife
 h   = 10;       // Hoehe der Pfeife
-d   = 7.5;      // Durchmesser Pfeifenloecher
+d   = 8;        // Durchmesser Pfeifenloecher
 lr  = 34;       // Laenge rechtes Pfeifenloch
 ll  = 30;       // Laenge linkes Pfeifenloch
-w   = 32;       // Winkel der Pfeifenlochschraege
+w   = 31;       // Winkel der Pfeifenlochschraege
+
 
 // Pfeife ohne Mundstueck
 difference()
@@ -53,13 +54,13 @@ difference()
     // Schraege am rechten Loch
     translate([ -b, -(b-b/4), -1])
         rotate([ 0, 0, -w])
-            cube([ l, b, h+2]);
+            cube([ l, b-b/15, h+2]);
 
     // Schraege am linken Loch
     mirror([ 0, 1, 0])
         translate([ -b, -(b-b/4), -1])
             rotate([ 0, 0, -w])
-                cube([ l, b, h+2]);
+                cube([ l, b-b/15, h+2]);
 }
 
 // Mundstueck zur Pfeife
@@ -90,10 +91,11 @@ difference()
             cylinder( lr+1, d/2, d/2);
 }
 
-// Verengung im Mundstück
+// Verengung im Mundstueck
 translate([ -b/2, 0, 0])
 difference()
 {
+    // 2 Zylinder wirken als Duese
     translate([ 0, 0, 0])
     {
         translate([ 0, -d/2, h/2])
@@ -117,10 +119,13 @@ difference()
             cube([ l, b, h+2]);
 }
 
+
 // Die SCHRIFT
-/*
 translate([ 0, 0, 0])
 {
+    // bei Groessenaenderung muss hier per Hand
+    // nachgeregelt werden. Automatisch per 
+    // Variablen wird das nicht klappen
     translate([ -b/2, -b/2 +9, h])
         linear_extrude(0.8)
             text("Die",5,"Folio Xbd BT");
@@ -129,6 +134,3 @@ translate([ 0, 0, 0])
         linear_extrude(0.8)
             text("PARTEI", 7,"Folio Xbd BT");
 }
-*/
-
-
