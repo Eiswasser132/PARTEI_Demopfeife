@@ -1,151 +1,134 @@
 $fn = 100;
 
-h   = 10;   // Hoehe
-b   = 20;   // Breite
-l   = 40;   // Laenge (ohne Mundstueck)
-ml  = 10;   // Laenge des Mundstuecks
-d   = 4.5;    // Durchmesser Luftroehre
-ll  = 30;   // Laenge Rohr links
-lr  = 27;   // Laenge Rohr rechts
+b   = 20;       // Breite der Pfeife
+l   = 35;       // Laenge der Pfeife
+h   = 10;       // Hoehe der Pfeife
+d   = 7.5;      // Durchmesser Pfeifenloecher
+lr  = 34;       // Laenge rechtes Pfeifenloch
+ll  = 30;       // Laenge linkes Pfeifenloch
+w   = 32;       // Winkel der Pfeifenlochschraege
 
-// Pfeifenkoerper ohne Mundstueck
+// Pfeife ohne Mundstueck
 difference()
 {
-    // einpacken, damit es ein Koerper wird, von dem abgezogen wird
-    translate([ 0, b/4, 0])
+    // Pfeifenkoerper nach oben auf Null verschieben
+    translate([ 0, 0, h/2])
     {
-        // rechteckiger Grundkoerper
-        cube([ l, b/2, h]);
+        // Pfeifenkoerper soll liegen
+        rotate([ 0, 90, 0])
+        {
+            // runder Pfeifenkoerper
+            cylinder( l, b/2, b/2);
 
-        // rechte Rundung
-        translate([ 0, 0, h/2])
-            rotate([ 0, 90, 0])
-                cylinder( l, h/2, h/2);
-
-        // linke Rundung
-        translate([ 0, b/2, h/2])
-            rotate([ 0, 90, 0])
-                cylinder( l, h/2, h/2);
-
-        // hintere Rundung
-        translate([ l, b/2, h/2])
-            rotate([ 90, 0, 0])
-                cylinder( b/2, h/2, h/2);
-
-        // rechte hintere Rundung
-        translate([ l, 0, h/2])
-            sphere(h/2);
-
-        // linke hintere Rundung
-        translate([ l, b/2, h/2])
-            sphere(h/2);
+            // rundes Ende fuers Band
+            translate([ 0, 0, l])
+                sphere(b/2);
+        }
     }
 
-    // rechtes Rohr
-    translate([ -1, b/4 + 0, h/2])
+    // untere Abflachung
+    translate([ -b/2, -b/2, -h])
+        cube([ l+b, b, h]);
+
+    // obere Abflachung
+    translate([ -b/2, -b/2, h])
+        cube([ l+b, b, h]);
+
+    // gebogenes Loch fuer Band od Schluesselring
+    translate([ l+2*h+b/4, 0, h/2])
+        rotate_extrude(convexity = 10)
+            translate([2*h, 0, 0])
+                circle(d* 2/5);
+
+    // linkes Pfeifenloch
+    translate([ -1, +b/4, h/2])
         rotate([ 0, 90, 0])
-            cylinder( lr, d, d);
+            cylinder( ll+1, d/2, d/2);
 
-    // linkes Rohr
-    translate([ -1, b/4 + b/2, h/2])
+    // rechtes Pfeifenloch
+    translate([ -1, -b/4, h/2])
         rotate([ 0, 90, 0])
-            cylinder( ll, d, d);
+            cylinder( lr+1, d/2, d/2);
 
-    // Schnurloch hinten
-    translate([ l, l/2, h/2])
-        rotate([ 90, 0, 0])
-            cylinder( l/2, h/4, h/4);
+    // Schraege am rechten Loch
+    translate([ -b, -(b-b/4), -1])
+        rotate([ 0, 0, -w])
+            cube([ l, b, h+2]);
 
-    // rechtes Tonloch
-    translate([ -b/10, b/4 + 0 , h/2])
-        rotate([ 90, 0, 30])
-            cylinder( h, 1.25*d, 1.25*d);
-
-    // linkes Tonloch
-    translate([ -b/10, b/4 + b/2 , h/2])
-        rotate([ 270, 0, -30])
-            cylinder( h, 1.25*d, 1.25*d);
+    // Schraege am linken Loch
+    mirror([ 0, 1, 0])
+        translate([ -b, -(b-b/4), -1])
+            rotate([ 0, 0, -w])
+                cube([ l, b, h+2]);
 }
 
-
-// das Mundstueck
-translate([ -ml, b/4, 0])
+// Mundstueck zur Pfeife
+translate([-b*2/3,0,0])
+difference()
 {
-    difference()
+    // liegnden Koerper nach oben auf Null verschieben
+    translate([ 0, 0, h/2])
+        rotate([ 0, 90, 0])
+            cylinder( b*2/3, b/2, b/2);
+
+    // untere Abflachung
+    translate([ -b/2, -b/2, -h])
+        cube([ l+b, b, h]);
+
+    // obere Abflachung
+    translate([ -b/2, -b/2, h])
+        cube([ l+b, b, h]);
+
+    // linkes Pfeifenloch
+    translate([ -1, +b/4, h/2])
+        rotate([ 0, 90, 0])
+            cylinder( ll+1, d/2, d/2);
+
+    // rechtes Pfeifenloch
+    translate([ -1, -b/4, h/2])
+        rotate([ 0, 90, 0])
+            cylinder( lr+1, d/2, d/2);
+}
+
+// Verengung im Mundstück
+translate([ -b/2, 0, 0])
+difference()
+{
+    translate([ 0, 0, 0])
     {
-        // einpacken wie oben
-        translate([ 0, 0, 0])
-        {
-            // rechteckiger Grundkoerper
-            cube([ ml, b/2, h]);
-
-            // rechte Rundung
-            translate([ 0, 0, h/2])
-                rotate([ 0, 90, 0])
-                    cylinder( ml, h/2, h/2);
-
-            // linke Rundung
-            translate([ 0, b/2, h/2])
-                rotate([ 0, 90, 0])
-                    cylinder( ml, h/2, h/2);
-        }
-        // rechtes Rohr
-        translate([ -1, 0, h/2])
+        translate([ 0, -d/2, h/2])
             rotate([ 0, 90, 0])
-                cylinder( lr, d, d);
+                cylinder( b/2, d/2, d/2);
 
-        // linkes Rohr
-        translate([ -1, b/2, h/2])
+        translate([ 0, d/2, h/2])
             rotate([ 0, 90, 0])
-                cylinder( ll, d, d);
+                cylinder( b/2, d/2, d/2);
     }
 
-    difference()
-    {
-        translate([ 0, 0, 0])
-        {
-            // rechte Verengung
-            translate([ ml - 0.75*ml, d, h/2 ])
-            {
-                rotate([ 35, 90, 0])
-                    cylinder(0.75* ml, d/40, d+d/15);
+    // Schraege am linken Loch
+    mirror([ 0, 1, 0])
+        translate([ -b*2/3, -(b-b/4), -1])
+            rotate([ 0, 0, -40])
+                cube([ l, b, h+2]);
 
-                translate([ ml/2, -d+0.5, 0])
-                    rotate([ 0, 90, 0])
-                        cylinder(ml, d, d);
-            }
-
-            // linke Verengung
-            translate([ ml - 0.75*ml, d+1, h/2 ])
-            {
-                rotate([ -35, 90, 0])
-                    cylinder( 0.75*ml, d/40, d+d/15);
-
-                translate([ ml/2, d-0.5, 0])
-                    rotate([ 0, 90, 0])
-                        cylinder(ml, d, d);
-
-            }
-        }
-
-        // Verengungen hinten buendig abschneiden
-        translate([ ml, -b/4, -1])
-            cube([ ml, b, h+2]);
-    }
+    // Schraege am rechten Loch
+    translate([ -b*2/3, -(b-b/4), -1])
+        rotate([ 0, 0, -40])
+            cube([ l, b, h+2]);
 }
 
 // Die SCHRIFT
-translate([ 0, b/2, 0])
+/*
+translate([ 0, 0, 0])
 {
-    translate([ -ml/2, -1.2, h])
-        linear_extrude(height=0.8)
-            text("Die",4.5,"Folio Xbd BT");
+    translate([ -b/2, -b/2 +9, h])
+        linear_extrude(0.8)
+            text("Die",5,"Folio Xbd BT");
 
-    translate([ ml/2+1.5, -3.2, h])
-        linear_extrude(height=0.8)
-            text("PARTEI", 6.5,"Folio Xbd BT");
+    translate([b/4, -b/2 +7, h])
+        linear_extrude(0.8)
+            text("PARTEI", 7,"Folio Xbd BT");
 }
-
-
+*/
 
 
