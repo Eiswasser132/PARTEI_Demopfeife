@@ -1,10 +1,10 @@
 $fn = 100;
 
 b   = 20;       // Breite der Pfeife
-l   = 35;       // Laenge der Pfeife
+l   = 32;       // Laenge der Pfeife
 h   = 10;       // Hoehe der Pfeife
-d   = 8;        // Durchmesser Pfeifenloecher
-lr  = 34;       // Laenge rechtes Pfeifenloch
+d   = 7.5;      // Durchmesser Pfeifenloecher
+lr  = 31.5;     // Laenge rechtes Pfeifenloch
 ll  = 30;       // Laenge linkes Pfeifenloch
 w   = 31;       // Winkel der Pfeifenlochschraege
 
@@ -119,7 +119,6 @@ difference()
             cube([ l, b, h+2]);
 }
 
-
 // Die SCHRIFT
 translate([ 0, 0, 0])
 {
@@ -130,7 +129,7 @@ translate([ 0, 0, 0])
         linear_extrude(0.8)
             text("Die",5,"Folio Xbd BT");
 
-    translate([b/4, -b/2 +7, h])
+    translate([b/8, -b/2 +7, h])
         linear_extrude(0.8)
             text("PARTEI", 7,"Folio Xbd BT");
 }
